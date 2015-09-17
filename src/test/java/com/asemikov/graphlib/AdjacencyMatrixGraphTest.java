@@ -1,7 +1,10 @@
 package com.asemikov.graphlib;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.fail;
 
@@ -46,7 +49,8 @@ public class AdjacencyMatrixGraphTest {
 
     @Test
     public void testBFS() {
-        AdjacencyMatrixGraph<String> graph = new AdjacencyMatrixGraph<String>(false, 10);
+//        AdjacencyMatrixGraph<String> graph = new AdjacencyMatrixGraph<String>(false, 10);
+        Graph<String> graph = new AdjacencyListGraph<String>();
 
         graph.addVertex("A");
         graph.addVertex("B");
@@ -62,9 +66,17 @@ public class AdjacencyMatrixGraphTest {
         graph.addEdge("E", "F");
 
         graph.addEdge("A", "D");
-        graph.addEdge("A", "F");
+        graph.addEdge("C", "D");
+        graph.addEdge("C", "F");
 
-        graph.bfs("C");
+        List<Edge<String>> path = graph.getPath("F", "A");
+
+        if (path.isEmpty()) {
+            System.out.println("No path");
+        }
+
+        for (Edge<String> edge : path) {
+            System.out.println(edge.getSourceVertex() + "->" + edge.getTargetVertex());
+        }
     }
-
 }
