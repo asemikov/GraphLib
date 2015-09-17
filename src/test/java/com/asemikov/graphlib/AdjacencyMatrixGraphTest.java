@@ -1,7 +1,6 @@
 package com.asemikov.graphlib;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class AdjacencyMatrixGraphTest {
             graph.addVertex(null);
             fail("Expected NullPointerException");
         } catch (NullPointerException e) {
-            Assert.assertEquals(e.getMessage(), "Null is not allowed as 'vertex' parameter");
+            Assert.assertEquals("Null is not allowed as 'vertex' parameter", e.getMessage());
         }
 
         graph.addVertex("abc");
@@ -31,7 +30,7 @@ public class AdjacencyMatrixGraphTest {
             graph.addVertex("ghi");
             fail("Expected IndexOutOfBoundsException");
         } catch (IndexOutOfBoundsException e) {
-            Assert.assertEquals(e.getMessage(), "Graph reached maximum vertex count");
+            Assert.assertEquals("Graph reached maximum vertex count", e.getMessage());
         }
     }
 
@@ -43,7 +42,7 @@ public class AdjacencyMatrixGraphTest {
             graph.addEdge("abc", "def");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            Assert.assertEquals(e.getMessage(), "Vertex 'sourceVertex' is not present in graph");
+            Assert.assertEquals("Graph has no vertex abc", e.getMessage());
         }
     }
 
@@ -70,6 +69,8 @@ public class AdjacencyMatrixGraphTest {
         graph.addEdge("C", "F");
 
         List<Edge<String>> path = graph.getPath("F", "A");
+
+        graph.traverse("A", str -> System.out.println(str));
 
         if (path.isEmpty()) {
             System.out.println("No path");

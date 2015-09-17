@@ -3,9 +3,11 @@ package com.asemikov.graphlib;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by alse0514 on 17.09.2015.
@@ -44,11 +46,11 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
         int targetVertexIndex = vertexList.indexOf(targetVertex);
 
         if (sourceVertexIndex == -1) {
-            throw new IllegalArgumentException("Vertex 'sourceVertex' is not present in graph");
+            throw new IllegalArgumentException("Graph has no vertex " + sourceVertex);
         }
 
         if (targetVertexIndex == -1) {
-            throw new IllegalArgumentException("Vertex 'targetVertexIndex' is not present in graph");
+            throw new IllegalArgumentException("Graph has no vertex " + targetVertex);
         }
 
         boolean result = setEdge(sourceVertexIndex, targetVertexIndex);
@@ -79,7 +81,7 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
         LinkedList<Edge<Vertex>> path = new LinkedList<Edge<Vertex>>();
 
         if (sourceVertexIndex != targetVertexIndex) {
-            int parent[] = bfs(sourceVertexIndex);
+            int parent[] = bfs(sourceVertexIndex, null);
 
             int i = targetVertexIndex;
             while (parent[i] != -1) {
@@ -101,6 +103,17 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
         return edgesCount;
     }
 
+    @Override
+    public void traverse(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer) {
+        int rootVertexIndex = vertexList.indexOf(rootVertex);
+
+        if (rootVertexIndex == -1) {
+            throw new IllegalArgumentException("Graph has no vertex " + rootVertex);
+        }
+
+        bfs(rootVertexIndex, consumer);
+    }
+
     protected abstract boolean setEdge(int sourceVertexIndex, int targetVertexIndex);
-    protected abstract int[] bfs(int rootVertexIndex);
+    protected abstract int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer);
 }

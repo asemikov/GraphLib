@@ -2,6 +2,7 @@ package com.asemikov.graphlib;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by alse0514 on 17.09.2015.
@@ -30,7 +31,7 @@ public class AdjacencyListGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
     }
 
     @Override
-    protected int[] bfs(int rootVertexIndex) {
+    protected int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer) {
         boolean visited[] = new boolean[vertexList.size()];
         int parent[] = new int[vertexList.size()];
 
@@ -45,6 +46,9 @@ public class AdjacencyListGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
 
         while(!queue.isEmpty()) {
             int vertexIndex = queue.remove();
+            if (consumer != null) {
+                consumer.accept(vertexList.get(vertexIndex));
+            }
 
             // use PriorityQueue to sort adjacencyList
             PriorityQueue<Integer> sortedAdjacencyList = new PriorityQueue<Integer>(adjacencyList.get(vertexIndex));

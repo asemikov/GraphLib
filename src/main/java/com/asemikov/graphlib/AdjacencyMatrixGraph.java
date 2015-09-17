@@ -2,6 +2,7 @@ package com.asemikov.graphlib;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by asemikov on 16.09.15.
@@ -43,19 +44,9 @@ public class AdjacencyMatrixGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
             return false;
         }
     }
-/*
-    public void bfs(Vertex rootVertex) {
-        int rootVertexIndex = vertexList.indexOf(rootVertex);
-
-        if (rootVertexIndex == -1) {
-            throw new IllegalArgumentException("Root vertex is not present in graph");
-        }
-
-        bfs(rootVertexIndex);
-    }*/
 
     @Override
-    protected int[] bfs(int rootVertexIndex) {
+    protected int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer) {
         boolean visited[] = new boolean[vertexList.size()];
         int parent[] = new int[vertexList.size()];
 
@@ -70,6 +61,9 @@ public class AdjacencyMatrixGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
 
         while(!queue.isEmpty()) {
             int vertexIndex = queue.remove();
+            if (consumer != null) {
+                consumer.accept(vertexList.get(vertexIndex));
+            }
 
             for (int i = 0; i < maxVertexCount; i++) {
                 if (adjacencyMatrix[vertexIndex][i] && !visited[i]) {
