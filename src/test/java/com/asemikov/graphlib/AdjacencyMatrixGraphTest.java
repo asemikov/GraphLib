@@ -44,4 +44,27 @@ public class AdjacencyMatrixGraphTest {
         }
     }
 
+    @Test
+    public void testBFS() {
+        AdjacencyMatrixGraph<String> graph = new AdjacencyMatrixGraph<String>(false, 10);
+
+        graph.addVertex("A");
+        graph.addVertex("B");
+        graph.addVertex("C");
+        graph.addVertex("D");
+        graph.addVertex("E");
+        graph.addVertex("F");
+
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "D");
+        graph.addEdge("D", "E");
+        graph.addEdge("E", "F");
+
+        graph.addEdge("A", "D");
+        graph.addEdge("A", "F");
+
+        graph.bfs("C");
+    }
+
 }

@@ -3,8 +3,10 @@ package com.asemikov.graphlib;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by asemikov on 16.09.15.
@@ -98,6 +100,37 @@ public class AdjacencyMatrixGraph<Vertex> implements Graph<Vertex> {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void bfs(Vertex rootVertex) {
+        int rootVertexIndex = vertexList.indexOf(rootVertex);
+
+        if (rootVertexIndex == -1) {
+            throw new IllegalArgumentException("Root vertex is not present in graph");
+        }
+
+        bfs(rootVertexIndex);
+    }
+
+    private void bfs(int rootVertexIndex) {
+        boolean visited[] = new boolean[vertexList.size()];
+
+        Queue<Integer> queue = new ArrayDeque<Integer>();
+        queue.add(rootVertexIndex);
+        visited[rootVertexIndex] = true;
+
+        while(!queue.isEmpty()) {
+            int vertexIndex = queue.remove();
+
+            System.out.println(vertexList.get(vertexIndex));
+
+            for (int i = 0; i < maxVertexCount; i++) {
+                if (adjacencyMatrix[vertexIndex][i] && !visited[i]) {
+                    visited[i] = true;
+                    queue.add(i);
+                }
+            }
         }
     }
 }

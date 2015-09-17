@@ -9,19 +9,16 @@ public class Edge<Vertex> {
 
     private Vertex targetVertex;
 
+    public Edge(Vertex sourceVertex, Vertex targetVertex) {
+        this.sourceVertex = sourceVertex;
+        this.targetVertex = targetVertex;
+    }
+
     public Vertex getSourceVertex() {
         return sourceVertex;
     }
 
-    public void setSourceVertex(Vertex sourceVertex) {
-        this.sourceVertex = sourceVertex;
-    }
-
     public Vertex getTargetVertex() {
         return targetVertex;
-    }
-
-    public void setTargetVertex(Vertex targetVertex) {
-        this.targetVertex = targetVertex;
     }
 }
