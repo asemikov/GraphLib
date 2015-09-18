@@ -1,20 +1,23 @@
 package com.asemikov.graphlib;
 
 import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by asemikov on 16.09.15.
+ *
+ * Implements unweighted graph based on adjacency matrix.
  */
-public class AdjacencyMatrixGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
+public class AdjacencyMatrixGraph<Vertex> extends AbstractGraph<Vertex> {
 
     private boolean adjacencyMatrix[][];
 
     private int maxVertexCount = 1000;
 
     public AdjacencyMatrixGraph() {
-        vertexList = new ArrayList<Vertex>(maxVertexCount);
+        vertexList = new ArrayList<>(maxVertexCount);
         adjacencyMatrix = new boolean[maxVertexCount][maxVertexCount];
     }
 
@@ -22,7 +25,7 @@ public class AdjacencyMatrixGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
         this.isDirected = isDirected;
         this.maxVertexCount = maxVertexCount;
 
-        vertexList = new ArrayList<Vertex>(maxVertexCount);
+        vertexList = new ArrayList<>(maxVertexCount);
         adjacencyMatrix = new boolean[maxVertexCount][maxVertexCount];
     }
 
@@ -45,35 +48,20 @@ public class AdjacencyMatrixGraph<Vertex> extends AbstractSimpleGraph<Vertex> {
         }
     }
 
+    /**
+     * <p/>{@inheritDoc}
+     */
+    @Nonnull
     @Override
-    protected int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer) {
-        boolean visited[] = new boolean[vertexList.size()];
-        int parent[] = new int[vertexList.size()];
+    protected Collection<Integer> adjacentVerticesIndexCollection(int rootVertexIndex) {
+        List<Integer> indices = new ArrayList<>();
 
         for (int i = 0; i < vertexList.size(); i++) {
-            visited[i] = false;
-            parent[i] = -1;
-        }
-
-        Queue<Integer> queue = new ArrayDeque<Integer>();
-        queue.add(rootVertexIndex);
-        visited[rootVertexIndex] = true;
-
-        while(!queue.isEmpty()) {
-            int vertexIndex = queue.remove();
-            if (consumer != null) {
-                consumer.accept(vertexList.get(vertexIndex));
-            }
-
-            for (int i = 0; i < maxVertexCount; i++) {
-                if (adjacencyMatrix[vertexIndex][i] && !visited[i]) {
-                    visited[i] = true;
-                    parent[i] = vertexIndex;
-                    queue.add(i);
-                }
+            if (adjacencyMatrix[rootVertexIndex][i]) {
+                indices.add(i);
             }
         }
 
-        return parent;
+        return indices;
     }
 }

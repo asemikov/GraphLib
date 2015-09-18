@@ -4,17 +4,18 @@ import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.Integer;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
  * Created by alse0514 on 17.09.2015.
+ *
+ * Abstract graph implementation. Contains common algorithms.
  */
-public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
+public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
 
-    protected List<Vertex> vertexList = new ArrayList<Vertex>();
+    protected List<Vertex> vertexList = new ArrayList<>();
 
     protected int edgesCount = 0;
 
@@ -65,8 +66,9 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
         return result;
     }
 
+    @Nonnull
     @Override
-    public List<Edge<Vertex>> getPath(Vertex sourceVertex, Vertex targetVertex) {
+    public List<Edge<Vertex>> getPath(@Nonnull Vertex sourceVertex, @Nonnull Vertex targetVertex) {
         int sourceVertexIndex = vertexList.indexOf(sourceVertex);
         int targetVertexIndex = vertexList.indexOf(targetVertex);
 
@@ -78,14 +80,14 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
             throw new IllegalArgumentException("Graph has no vertex " + targetVertex);
         }
 
-        LinkedList<Edge<Vertex>> path = new LinkedList<Edge<Vertex>>();
+        LinkedList<Edge<Vertex>> path = new LinkedList<>();
 
         if (sourceVertexIndex != targetVertexIndex) {
             int parent[] = bfs(sourceVertexIndex, null);
 
             int i = targetVertexIndex;
             while (parent[i] != -1) {
-                path.addFirst(new Edge<Vertex>(vertexList.get(parent[i]), vertexList.get(i)));
+                path.addFirst(new Edge<>(vertexList.get(parent[i]), vertexList.get(i)));
                 i = parent[i];
             }
         }
@@ -104,7 +106,7 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
     }
 
     @Override
-    public void traverse(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer) {
+    public void traverseFrom(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer) {
         int rootVertexIndex = vertexList.indexOf(rootVertex);
 
         if (rootVertexIndex == -1) {
@@ -114,6 +116,45 @@ public abstract class AbstractSimpleGraph<Vertex> implements Graph<Vertex> {
         bfs(rootVertexIndex, consumer);
     }
 
+    private int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer) {
+        boolean visited[] = new boolean[vertexList.size()];
+        int parent[] = new int[vertexList.size()];
+
+        for (int i = 0; i < vertexList.size(); i++) {
+            visited[i] = false;
+            parent[i] = -1;
+        }
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(rootVertexIndex);
+        visited[rootVertexIndex] = true;
+
+        while(!queue.isEmpty()) {
+            int vertexIndex = queue.remove();
+            if (consumer != null) {
+                consumer.accept(vertexList.get(vertexIndex));
+            }
+
+            for (int i : adjacentVerticesIndexCollection(vertexIndex)) {
+                if (!visited[i]) {
+                    visited[i] = true;
+                    parent[i] = vertexIndex;
+                    queue.add(i);
+                }
+            }
+        }
+
+        return parent;
+    }
+
     protected abstract boolean setEdge(int sourceVertexIndex, int targetVertexIndex);
-    protected abstract int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer);
+
+    /**
+     * Returns collection of indexes of adjacent vertices
+     * @param rootVertexIndex root vertex index
+     * @return Nonnull {@link Collection} of {@link Integer} indexes.
+     * Returns empty collection if no adjacent vertices were found.
+     */
+    @Nonnull
+    protected abstract Collection<Integer> adjacentVerticesIndexCollection(int rootVertexIndex);
 }

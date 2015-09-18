@@ -21,6 +21,6 @@ public interface Graph<Vertex> {
 
     int edgesCount();
 
-    void traverse(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer);
+    void traverseFrom(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer);
 
 }
