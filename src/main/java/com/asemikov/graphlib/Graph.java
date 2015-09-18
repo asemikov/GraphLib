@@ -23,4 +23,6 @@ public interface Graph<Vertex> {
 
     void traverseFrom(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer);
 
+    void traverseAll(@Nullable Consumer<Vertex> consumer);
+
 }

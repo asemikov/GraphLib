@@ -3,7 +3,6 @@ package com.asemikov.graphlib;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.fail;
@@ -66,6 +65,10 @@ public class AdjacencyMatrixGraphTest {
         graph.addVertex("E");
         graph.addVertex("F");
 
+        graph.addVertex("X");
+        graph.addVertex("Y");
+        graph.addVertex("Z");
+
         graph.addEdge("A", "B");
         graph.addEdge("B", "C");
         graph.addEdge("C", "D");
@@ -76,11 +79,20 @@ public class AdjacencyMatrixGraphTest {
         graph.addEdge("C", "D");
         graph.addEdge("C", "F");
 
+        graph.addEdge("X", "Y");
+        graph.addEdge("Y", "Z");
+
+        System.out.println("Traverse from A");
+        graph.traverseFrom("A", System.out::println);
+
+        System.out.println("\nTraverse from Z");
+        graph.traverseFrom("Z", System.out::println);
+
+        System.out.println("\nTraverse all");
+        graph.traverseAll(System.out::println);
+
+        System.out.println("\nFind path from F to A");
         List<Edge<String>> path = graph.getPath("F", "A");
-        List<String> vertices = new ArrayList<>();
-
-        graph.traverseFrom("A", s -> vertices.add(s));
-
         if (path.isEmpty()) {
             System.out.println("No path");
         }

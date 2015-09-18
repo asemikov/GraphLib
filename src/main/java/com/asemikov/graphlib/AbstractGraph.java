@@ -116,12 +116,30 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
         bfs(rootVertexIndex, consumer);
     }
 
+    @Override
+    public void traverseAll(@Nullable Consumer<Vertex> consumer) {
+        boolean visited[] = new boolean[vertexList.size()];
+
+        for (int i = 0; i < visited.length; i++) {
+            if (!visited[i]) {
+                bfs(i,
+                        vertex -> {
+                            int vertexIndex = vertexList.indexOf(vertex);
+                            visited[vertexIndex] = true;
+                            if (consumer != null) {
+                                consumer.accept(vertex);
+                            }
+                        }
+                );
+            }
+        }
+    }
+
     private int[] bfs(int rootVertexIndex, Consumer<Vertex> consumer) {
         boolean visited[] = new boolean[vertexList.size()];
         int parent[] = new int[vertexList.size()];
 
         for (int i = 0; i < vertexList.size(); i++) {
-            visited[i] = false;
             parent[i] = -1;
         }
 
