@@ -17,10 +17,6 @@ public interface Graph<Vertex> {
     @Nonnull
     List<Edge<Vertex>> getPath(@Nonnull Vertex sourceVertex, @Nonnull Vertex targetVertex);
 
-    int vertexCount();
-
-    int edgesCount();
-
     void traverseFrom(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer);
 
     void traverseAll(@Nullable Consumer<Vertex> consumer);

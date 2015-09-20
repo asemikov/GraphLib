@@ -12,6 +12,10 @@ public class AdjacencyListGraph<Vertex> extends AbstractGraph<Vertex> {
 
     private List<List<Integer>> adjacencyList = new ArrayList<>();
 
+    public AdjacencyListGraph(boolean isDirected) {
+        super(isDirected);
+    }
+
     @Override
     public boolean addVertex(@Nonnull Vertex vertex) {
         boolean result = super.addVertex(vertex);

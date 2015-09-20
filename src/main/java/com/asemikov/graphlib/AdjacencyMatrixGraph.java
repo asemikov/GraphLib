@@ -16,13 +16,9 @@ public class AdjacencyMatrixGraph<Vertex> extends AbstractGraph<Vertex> {
 
     private int maxVertexCount = 1000;
 
-    public AdjacencyMatrixGraph() {
-        vertexList = new ArrayList<>(maxVertexCount);
-        adjacencyMatrix = new boolean[maxVertexCount][maxVertexCount];
-    }
-
     public AdjacencyMatrixGraph(boolean isDirected, int maxVertexCount) {
-        this.isDirected = isDirected;
+        super(isDirected);
+
         this.maxVertexCount = maxVertexCount;
 
         vertexList = new ArrayList<>(maxVertexCount);

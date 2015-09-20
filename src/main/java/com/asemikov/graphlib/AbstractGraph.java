@@ -17,9 +17,11 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
 
     protected List<Vertex> vertexList = new ArrayList<>();
 
-    protected int edgesCount = 0;
-
     protected boolean isDirected = false;
+
+    public AbstractGraph(boolean isDirected) {
+        this.isDirected = isDirected;
+    }
 
     @Override
     public boolean addVertex(@Nonnull Vertex vertex) {
@@ -59,10 +61,6 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
             result = setEdge(targetVertexIndex, sourceVertexIndex);
         }
 
-        if (result) {
-            edgesCount++;
-        }
-
         return result;
     }
 
@@ -93,16 +91,6 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
         }
 
         return path;
-    }
-
-    @Override
-    public int vertexCount() {
-        return vertexList.size();
-    }
-
-    @Override
-    public int edgesCount() {
-        return edgesCount;
     }
 
     @Override
