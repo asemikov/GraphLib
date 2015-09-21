@@ -9,15 +9,25 @@ public class Edge<Vertex> {
 
     private Vertex targetVertex;
 
+    /**
+     * @param sourceVertex source vertex of the edge
+     * @param targetVertex target vertex of the edge
+     */
     public Edge(Vertex sourceVertex, Vertex targetVertex) {
         this.sourceVertex = sourceVertex;
         this.targetVertex = targetVertex;
     }
 
+    /**
+     * @return source vertex of the edge
+     */
     public Vertex getSourceVertex() {
         return sourceVertex;
     }
 
+    /**
+     * @return target vertex of the edge
+     */
     public Vertex getTargetVertex() {
         return targetVertex;
     }

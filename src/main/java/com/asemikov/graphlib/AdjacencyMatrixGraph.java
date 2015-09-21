@@ -16,6 +16,10 @@ public class AdjacencyMatrixGraph<Vertex> extends AbstractGraph<Vertex> {
 
     private int maxVertexCount = 1000;
 
+    /**
+     * @param isDirected flag to set the graph directed or undirected
+     * @param maxVertexCount maximum vertex capacity of the graph
+     */
     public AdjacencyMatrixGraph(boolean isDirected, int maxVertexCount) {
         super(isDirected);
 

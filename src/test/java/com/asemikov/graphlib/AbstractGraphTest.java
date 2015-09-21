@@ -43,7 +43,7 @@ public abstract class AbstractGraphTest {
     }
 
     @Test
-    public void testAddVertexFail() {
+    public void testAddVertex() {
         Graph<String> graph = createGraph(false);
 
         try {
@@ -52,13 +52,19 @@ public abstract class AbstractGraphTest {
         } catch (NullPointerException e) {
             Assert.assertEquals("Null is not allowed as 'vertex' parameter", e.getMessage());
         }
+
+        Assert.assertTrue("Adding nonexistent vertex should return true", graph.addVertex("A"));
+        Assert.assertFalse("Adding existent vertex should return false", graph.addVertex("A"));
     }
 
     @Test
-    public void testAddEdgeFail() {
+    public void testAddEdge() {
         Graph<String> graph = createGraph(false);
         graph.addVertex("A");
         graph.addVertex("B");
+
+        Assert.assertTrue("Adding nonexistent edge should return true", graph.addEdge("A", "B"));
+        Assert.assertFalse("Adding existent vertex should return false", graph.addEdge("A", "B"));
 
         try {
             graph.addEdge(null, null);
@@ -102,6 +108,13 @@ public abstract class AbstractGraphTest {
         initTestGraph(graph);
 
         List<String> actualList = new ArrayList<>();
+
+        try {
+            graph.traverseFrom(null, actualList::add);
+            fail("Expected NullPointerException");
+        } catch (NullPointerException e) {
+            Assert.assertEquals("Null is not allowed as 'rootVertex' parameter", e.getMessage());
+        }
 
         try {
             graph.traverseFrom("J", actualList::add);
@@ -152,6 +165,34 @@ public abstract class AbstractGraphTest {
     public void getPathTest() {
         Graph<String> graph = createGraph(false);
         initTestGraph(graph);
+
+        try {
+            graph.getPath(null, null);
+            fail("Expected NullPointerException");
+        } catch (NullPointerException e) {
+            Assert.assertEquals("Null is not allowed as 'sourceVertex' parameter", e.getMessage());
+        }
+
+        try {
+            graph.getPath("A", null);
+            fail("Expected NullPointerException");
+        } catch (NullPointerException e) {
+            Assert.assertEquals("Null is not allowed as 'targetVertex' parameter", e.getMessage());
+        }
+
+        try {
+            graph.addEdge("J", "A");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            Assert.assertEquals("Graph has no vertex J", e.getMessage());
+        }
+
+        try {
+            graph.addEdge("A", "J");
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            Assert.assertEquals("Graph has no vertex J", e.getMessage());
+        }
 
         List<Edge<String>> actualList = graph.getPath("A", "F");
         Assert.assertEquals(Arrays.asList(

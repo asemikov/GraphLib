@@ -12,6 +12,9 @@ public class AdjacencyListGraph<Vertex> extends AbstractGraph<Vertex> {
 
     private List<List<Integer>> adjacencyList = new ArrayList<>();
 
+    /**
+     * @param isDirected flag to set the graph directed or undirected
+     */
     public AdjacencyListGraph(boolean isDirected) {
         super(isDirected);
     }

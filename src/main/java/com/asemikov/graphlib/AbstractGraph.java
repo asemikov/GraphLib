@@ -19,6 +19,9 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
 
     protected boolean isDirected = false;
 
+    /**
+     * @param isDirected flag to set the graph directed or undirected
+     */
     public AbstractGraph(boolean isDirected) {
         this.isDirected = isDirected;
     }
@@ -67,6 +70,9 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
     @Nonnull
     @Override
     public List<Edge<Vertex>> getPath(@Nonnull Vertex sourceVertex, @Nonnull Vertex targetVertex) {
+        Preconditions.checkNotNull(sourceVertex, "Null is not allowed as 'sourceVertex' parameter");
+        Preconditions.checkNotNull(targetVertex, "Null is not allowed as 'targetVertex' parameter");
+
         int sourceVertexIndex = vertexList.indexOf(sourceVertex);
         int targetVertexIndex = vertexList.indexOf(targetVertex);
 
@@ -95,6 +101,8 @@ public abstract class AbstractGraph<Vertex> implements Graph<Vertex> {
 
     @Override
     public void traverseFrom(@Nonnull Vertex rootVertex, @Nullable Consumer<Vertex> consumer) {
+        Preconditions.checkNotNull(rootVertex, "Null is not allowed as 'rootVertex' parameter");
+
         int rootVertexIndex = vertexList.indexOf(rootVertex);
 
         if (rootVertexIndex == -1) {
